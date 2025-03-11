@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "./IDiamond.sol";
+import {IDiamond} from "./IDiamond.sol";
 
 interface IDiamondCut is IDiamond {
     /// @notice Add/replace/remove any number of functions and optionally execute
