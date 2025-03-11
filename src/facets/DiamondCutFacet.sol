@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import {IDiamondCut} from "../interfaces/IDiamondCut.sol";
 import {LibDiamond} from "../libraries/LibDiamond.sol";
-import {Ownable} from "./Ownable.sol";
+import {Ownable} from "../Ownable.sol";
 import {Diamond} from "../storages/Diamond.sol";
 
 contract DiamondCutFacet is IDiamondCut, Ownable {

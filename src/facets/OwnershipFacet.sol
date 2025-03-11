@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import {IOwnership} from "../interfaces/IOwnership.sol";
-import {Ownable} from "./Ownable.sol";
+import {Ownable} from "../Ownable.sol";
 import {Ownership} from "../storages/Ownership.sol";
 
 contract OwnershipFacet is IOwnership, Ownable {
