@@ -6,18 +6,18 @@ import {ICounter} from "../interfaces/ICounter.sol";
 import {Count} from "../storages/Count.sol";
 
 contract CounterFacet is ICounter {
-    function count() public view returns (uint256) {
+    function number() public view returns (uint256) {
         Count.Storage storage $ = Count.load();
-        return $.count;
+        return $.number;
     }
 
     function setNumber(uint256 newNumber) public {
         Count.Storage storage $ = Count.load();
-        $.count = newNumber;
+        $.number = newNumber;
     }
 
     function increment() public {
         Count.Storage storage $ = Count.load();
-        $.count++;
+        $.number++;
     }
 }

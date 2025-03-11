@@ -7,7 +7,7 @@ library Count {
     bytes32 internal constant POSITION = 0xa5fda9fb89c617c49017860dffaf5bd4eae18c68bd67ef0728cc763aa4cec4e2;
 
     struct Storage {
-        uint256 count;
+        uint256 number;
     }
 
     function load() internal pure returns (Storage storage $) {
