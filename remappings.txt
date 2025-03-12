@@ -1,0 +1,2 @@
+diamond/=lib/diamond/src/
+forge-std/=lib/forge-std/src/

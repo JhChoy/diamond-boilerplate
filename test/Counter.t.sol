@@ -2,18 +2,18 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
+import {IDiamond} from "diamond/interfaces/IDiamond.sol";
 
-import {IDiamond} from "../src/interfaces/IDiamond.sol";
 import {ICounter} from "../src/interfaces/ICounter.sol";
-import {IApp} from "../src/interfaces/IApp.sol";
-import {App} from "../src/App.sol";
+import {ICounterApp} from "../src/interfaces/ICounterApp.sol";
+import {CounterApp} from "../src/CounterApp.sol";
 import {CounterFacet} from "../src/facets/CounterFacet.sol";
 
 contract CounterTest is Test {
-    IApp public counter;
+    ICounterApp public counter;
 
     function setUp() public {
-        counter = IApp(address(new App(address(this))));
+        counter = ICounterApp(address(new CounterApp(address(this))));
 
         CounterFacet counterFacet = new CounterFacet();
         IDiamond.FacetCut[] memory cut = new IDiamond.FacetCut[](1);
