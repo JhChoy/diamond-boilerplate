@@ -7,15 +7,6 @@ import {IERC165} from "../interfaces/IERC165.sol";
 import {Diamond} from "../storages/Diamond.sol";
 
 contract DiamondLoupeFacet is IDiamondLoupe, IERC165 {
-    // Diamond Loupe Functions
-    ////////////////////////////////////////////////////////////////////
-    /// These functions are expected to be called frequently by tools.
-    //
-    // struct Facet {
-    //     address facetAddress;
-    //     bytes4[] functionSelectors;
-    // }
-
     function facets() external view returns (Facet[] memory facets_) {
         Diamond.Storage storage $ = Diamond.load();
         uint256 numFacets = $.facetAddresses.length;
