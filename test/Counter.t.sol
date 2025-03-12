@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
 import {IDiamond} from "diamond/interfaces/IDiamond.sol";
+import {Ownable} from "diamond/Ownable.sol";
 
 import {ICounter} from "../src/interfaces/ICounter.sol";
 import {ICounterApp} from "../src/interfaces/ICounterApp.sol";
@@ -38,5 +39,11 @@ contract CounterTest is Test {
     function testFuzz_SetNumber(uint256 x) public {
         counter.setNumber(x);
         assertEq(counter.number(), x);
+    }
+
+    function test_SetNumber_OnlyOwner() public {
+        vm.prank(address(1));
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, address(1)));
+        counter.setNumber(1);
     }
 }
