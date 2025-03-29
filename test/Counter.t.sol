@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
 import {IDiamond} from "diamond/interfaces/IDiamond.sol";
+import {DiamondScript} from "diamond/helpers/DiamondScript.sol";
 import {Ownable} from "diamond/Ownable.sol";
 
 import {ICounter} from "../src/interfaces/ICounter.sol";
@@ -10,24 +11,19 @@ import {ICounterApp} from "../src/interfaces/ICounterApp.sol";
 import {CounterApp} from "../src/CounterApp.sol";
 import {CounterFacet} from "../src/facets/CounterFacet.sol";
 
-contract CounterTest is Test {
-    ICounterApp public counter;
+contract CounterTest is Test, DiamondScript("CounterApp") {
+    string[] facetNames;
+    bytes[] facetArgs;
+
+    ICounterApp counter;
 
     function setUp() public {
-        counter = ICounterApp(address(new CounterApp(address(this))));
+        facetNames.push("CounterFacet");
+        facetArgs.push("");
 
-        CounterFacet counterFacet = new CounterFacet();
-        IDiamond.FacetCut[] memory cut = new IDiamond.FacetCut[](1);
-        bytes4[] memory functionSelectors = new bytes4[](3);
-        functionSelectors[0] = ICounter.number.selector;
-        functionSelectors[1] = ICounter.setNumber.selector;
-        functionSelectors[2] = ICounter.increment.selector;
-        cut[0] = IDiamond.FacetCut({
-            facetAddress: address(counterFacet),
-            action: IDiamond.FacetCutAction.Add,
-            functionSelectors: functionSelectors
-        });
-        counter.diamondCut(cut, address(0), "");
+        (address diamond,) = deploy(abi.encode(address(this)), facetNames, facetArgs);
+        counter = ICounterApp(diamond);
+
         counter.setNumber(0);
     }
 
