@@ -21,8 +21,7 @@ contract CounterTest is Test, DiamondScript("CounterApp") {
         facetNames.push("CounterFacet");
         facetArgs.push("");
 
-        (address diamond,) = deploy(abi.encode(address(this)), facetNames, facetArgs);
-        counter = ICounterApp(diamond);
+        counter = ICounterApp(deploy(abi.encode(address(this)), facetNames, facetArgs).diamond);
 
         counter.setNumber(0);
     }
