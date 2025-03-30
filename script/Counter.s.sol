@@ -21,7 +21,7 @@ contract CounterScript is DiamondScript("CounterApp") {
         facetNames.push("CounterFacet");
         facetArgs.push("");
 
-        counter = ICounterApp(deployAndSave(abi.encode(address(this)), facetNames, facetArgs).diamond);
+        counter = ICounterApp(deployAndSave(abi.encode(msg.sender), facetNames, facetArgs).diamond);
     }
 
     function upgrade() public broadcast {
