@@ -51,25 +51,38 @@ contract CounterScript is DiamondScript("CounterApp") {
         facetNames.push("CounterFacet");
         facetArgs.push("");
 
-        counter = ICounterApp(deployAndSave(abi.encode(address(this)), facetNames, facetArgs).diamond);
+        counter = ICounterApp(deploy(abi.encode(msg.sender), salt, facetNames, facetArgs, address(0), "").diamond);
     }
 
     function upgrade() public broadcast {
         facetNames.push("CounterFacet");
         facetArgs.push("");
 
-        upgradeToAndSave(facetNames, facetArgs);
+        upgrade(facetNames, facetArgs, address(0), "");
     }
 }
 ```
 1. Inherit from `DiamondScript` and pass the `"DiamondApp"` contract name to the constructor.
-2. Use `deploy` or `deployAndSave` function to deploy diamond and facets by providing a list of facet contract names and their encoded constructor arguments
-    - `deployAndSave` stores the addresses of the app and facet list in `deployments/${diamondName}.${network}.json` after deployment
-    - All external functions in these Facets will be registered
-3. Upgrade `DiamondApp` using `upgradeTo` or `upgradeToAndSave` functions
-    - This requires an existing deployment file. If not available, you can build the deployment json manually and pass it as the first argument to `upgradeTo(string,string[],bytes[])`
-    - `upgradeToAndSave` stores the addresses of the app and facet list in `deployments/${diamondName}.${network}.json` after deployment
-    - The app will be upgraded with all external functions from the specified Facets
+2. Use `deploy` function to deploy diamond and facets by providing:
+   - `args`: Initialization arguments for the diamond
+   - `salt`: Salt for deterministic address generation
+   - `facetNames`: List of facet contract names
+   - `facetArgs`: List of encoded constructor arguments for each facet
+   - `initContract`: Optional initialization contract address
+   - `initData`: Optional initialization data
+   - The deployment will automatically save the addresses in `deployments/${diamondName}.${network}.json`
+   - All external functions in these Facets will be registered
+3. Upgrade `DiamondApp` using `upgrade` function with:
+   - `facetNames`: List of facet contract names
+   - `facetArgs`: List of encoded constructor arguments for each facet
+   - `initContract`: Optional initialization contract address
+   - `initData`: Optional initialization data
+   - This requires an existing deployment file in `deployments/${diamondName}.${network}.json`
+   - The upgrade will automatically save the new addresses in the deployment file
+   - The app will be upgraded with all external functions from the specified Facets
+   - If a facet is not in the new list, its functions will be removed
+   - If a facet is updated, its functions will be replaced
+   - If a facet is new, its functions will be added
 
 
 ## Contribution
