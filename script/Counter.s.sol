@@ -13,6 +13,7 @@ contract CounterScript is DiamondScript("CounterApp") {
     string[] facetNames;
     bytes[] facetArgs;
 
+    bytes32 salt = bytes32(0);
     ICounterApp counter;
 
     function setUp() public {}
@@ -21,13 +22,13 @@ contract CounterScript is DiamondScript("CounterApp") {
         facetNames.push("CounterFacet");
         facetArgs.push("");
 
-        counter = ICounterApp(deployAndSave(abi.encode(msg.sender), facetNames, facetArgs).diamond);
+        counter = ICounterApp(deploy(abi.encode(msg.sender), salt, facetNames, facetArgs, address(0), "").diamond);
     }
 
     function upgrade() public broadcast {
         facetNames.push("CounterFacet");
         facetArgs.push("");
 
-        upgradeToAndSave(facetNames, facetArgs);
+        upgrade(facetNames, facetArgs, address(0), "");
     }
 }
